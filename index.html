@@ -16,41 +16,119 @@
         color: rgb(6, 5, 5);
         padding: 0 20px;
       }
-      
-      h1,
-      h2,
-      h3 {
+
+      h1, h2, h3 {
         color: #0965bc;
       }
+
       .section {
         margin: 40px 0;
       }
+
       .badges img,
       .tech-stack img {
         margin: 4px;
+        max-width: 100%;
+        height: auto;
       }
+
       .projects img,
       .experience img,
       .certificates img {
         width: 100%;
         border-radius: 10px;
       }
+
       .certificates-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 20px;
       }
+
       .certificate {
         background-color: #1e1e1e;
         border-radius: 10px;
         overflow: hidden;
       }
+
       .certificate h3 {
         margin: 10px 0 0;
       }
+
       .link-buttons a {
         display: inline-block;
         margin: 10px 10px 0 0;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      @media screen and (max-width: 768px) {
+        body {
+          padding: 0 10px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+
+        h2 {
+          font-size: 24px;
+        }
+
+        h3 {
+          font-size: 20px;
+        }
+
+        p, li {
+          font-size: 18px;
+        }
+
+        .certificates-container {
+          grid-template-columns: 1fr;
+        }
+
+        .experience li {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .experience img {
+          margin-left: 0;
+          margin-top: 15px;
+          width: 100%;
+          height: auto;
+        }
+
+        .section,
+        .experience div,
+        .projects ul {
+          font-size: 24px !important;
+        }
+
+        .badges img,
+        .tech-stack img {
+          width: 100%;
+          max-width: 250px;
+        }
+
+        div[style*="border-width: 200px"] {
+          border-width: 30px !important;
+        }
+
+        div[style*="font-size: 40px"] {
+          font-size: 24px !important;
+        }
+
+        li[style*="display: flex"] {
+          display: block !important;
+        }
       }
     </style>
   </head>
