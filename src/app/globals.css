@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; background: #08060f; }
+body { @apply bg-ink font-sans text-zinc-200 antialiased; overflow-x: hidden; }
+::selection { background: #a855f7; color: #fff; }
+:focus-visible { outline: 2px solid #a855f7; outline-offset: 3px; border-radius: 6px; }
+.grad-text { background: linear-gradient(100deg, #c084fc 10%, #60a5fa 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.link-u { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s; }
+.link-u:hover { background-size: 100% 1px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
