@@ -11,7 +11,7 @@ npm start
 ```
 
 ## Update content
-All content lives in `src/data/portfolio.ts`. Replace `public/Yash_Malik_Resume.pdf` to update the resume download.
+All content lives in `src/data/portfolio.ts`. Project case studies (Chef, Voice AI Agent, Cropie) are the `projects` array there; add real repo/demo URLs to each project's `links` field and the buttons appear automatically. Showcase components live in `src/components/projects/`. Replace `public/Yash_Malik_Resume.pdf` to update the resume download.
 
 ## Contact form
 Without configuration the form opens your email client (mailto). To send directly, create a Formspree form

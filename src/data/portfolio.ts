@@ -46,28 +46,160 @@ export const experience = [
   },
 ];
 
-export const projects = [
+export type Project = {
+  id: "chef" | "voice" | "cropie";
+  no: string;
+  name: string;
+  tagline: string;
+  category: string;
+  year: string;
+  /** Single accent colour that drives the project's visual identity. */
+  accent: string;
+  summary: string;
+  overview: string;
+  problem: string;
+  /** Figures taken directly from the project write-up — no invented metrics. */
+  metrics: { value: string; label: string }[];
+  architecture: { title: string; detail: string }[];
+  implementation: string[];
+  highlights: string[];
+  stack: string[];
+  /** Only fill these with real, verified URLs. Empty means the button is hidden. */
+  links: { github?: string; demo?: string };
+};
+
+export const projects: Project[] = [
   {
-    name: "Procurement Intelligence Agent",
-    short: "Four cooperating agents that automate the Source-to-Pay workflow.",
-    problem: "Supplier scoring, approval routing and procurement analytics are slow, manual and hard to audit.",
-    features: [
-      "4-agent system for supplier scoring, approval routing, process discovery and analytics",
-      "RAG-powered evaluation across 5 procurement dimensions, retrieving up to 10 chunks with ChromaDB and Sentence Transformers",
-      "Policy-based approvals with GPT-OSS 120B; 11+ operational tables with audit and metrics tracking",
+    id: "chef",
+    no: "01",
+    name: "Chef",
+    tagline: "AI Software Engineering Assistant",
+    category: "Agentic AI / Multi-Agent Systems",
+    year: "2026",
+    accent: "#a855f7",
+    summary:
+      "An agentic software engineer that turns natural-language requirements into complete software projects. Three specialised agents (Planner, Architect and Coder) work together through a stateful LangGraph workflow.",
+    overview:
+      "Chef is an agentic AI software engineering assistant. Instead of answering a prompt with a single block of code, it runs a collaborative three-agent workflow: a Planner analyses the requirement and breaks it into actionable tasks, an Architect designs the structure and implementation approach, and a Coder generates and modifies the project files. Progress from every stage streams to an interactive interface in real time.",
+    problem:
+      "Going from an idea to a structured, working codebase takes requirement analysis, architecture design and a lot of repetitive implementation. A single chat-style LLM reply doesn't plan, design or manage a multi-file project, so Chef splits that work between specialised agents that share state.",
+    metrics: [
+      { value: "3", label: "Collaborating agents" },
+      { value: "100+", label: "Project files managed" },
+      { value: "Live", label: "Workflow streaming" },
     ],
-    stack: ["Python", "FastAPI", "LangGraph", "ChromaDB", "React", "SQLite"],
+    architecture: [
+      { title: "Requirement intake", detail: "A natural-language requirement enters the LangGraph workflow as the initial shared state." },
+      { title: "Planner Agent", detail: "Analyses the requirement, works out the problem and breaks the request into actionable tasks." },
+      { title: "Architect Agent", detail: "Designs the software architecture, decides the project structure and defines the implementation approach." },
+      { title: "Coder Agent", detail: "Generates and modifies project files through tool calling, working iteratively through the planned tasks." },
+      { title: "Streaming state", detail: "Multi-agent state exposes planning, architecture and code-generation progress through an interactive interface in real time." },
+    ],
+    implementation: [
+      "Collaborative three-agent architecture built with LangGraph",
+      "Automated requirement analysis, architecture design, task decomposition and iterative code generation",
+      "Groq LLMs integrated with LangChain and tool calling",
+      "Stateful workflow orchestration across all three agents",
+      "Real-time workflow streaming to the application interface",
+    ],
+    highlights: [
+      "Planner → Architect → Coder pipeline orchestrated as a LangGraph state graph",
+      "Autonomous creation, updating and management of 100+ project files",
+      "Multi-agent state management exposes each stage's progress live",
+      "Tool calling lets agents act on the file system instead of only generating text",
+    ],
+    stack: ["Python", "LangGraph", "LangChain", "Groq LLMs", "Agentic AI", "Tool Calling", "Stateful Workflow Orchestration"],
+    links: { github: "https://github.com/Yashmalik2004/Chef" },
   },
   {
-    name: "Chef — AI Software Engineering Assistant",
-    short: "Turns a plain-language prompt into a complete software project.",
-    problem: "Going from an idea to a structured, working codebase takes planning, design and a lot of repetitive coding.",
-    features: [
-      "Planner, Architect and Coder agents orchestrated with LangGraph for planning, task decomposition and iterative code generation",
-      "Groq LLMs, LangChain and tool calling generate and manage 100+ project files",
-      "Real-time workflow streaming while the agents work",
+    id: "voice",
+    no: "02",
+    name: "Voice AI Agent",
+    tagline: "Real-Time AI Voice Support",
+    category: "Conversational AI / Voice AI / RAG",
+    year: "2026",
+    accent: "#60a5fa",
+    summary:
+      "A real-time voice support platform for e-commerce. Customers talk to it in the browser about orders, returns and products, and it replies through a streaming STT → LLM → TTS pipeline grounded in live data.",
+    overview:
+      "Voice AI Agent is a browser-based voice support platform built with LiveKit and Python. Customers hold natural spoken conversations about order tracking, returns and product questions. Speech streams through Deepgram, OpenAI and Cartesia. The LLM can call tools against order data and retrieve policy context with RAG, and a FastAPI backend handles sessions, auth and persistence.",
+    problem:
+      "E-commerce support questions such as \"where is my order?\", \"how do I return this?\" and \"what's the policy?\" are repetitive, but answering them by voice is hard. Replies must arrive fast enough to feel conversational, stay grounded in real order data and store policy, and cope with people interrupting mid-sentence.",
+    metrics: [
+      { value: "0.7s", label: "Endpointing" },
+      { value: "4", label: "LLM function tools" },
+      { value: "10 min", label: "LiveKit JWT lifetime" },
     ],
-    stack: ["Python", "LangGraph", "LangChain", "Groq LLMs"],
+    architecture: [
+      { title: "Browser ↔ LiveKit", detail: "Users join a LiveKit room from the browser using short-lived 10-minute JWTs." },
+      { title: "Voice activity & turns", detail: "Silero VAD with turn detection and 0.7-second endpointing; barge-in lets users interrupt the agent mid-reply." },
+      { title: "Speech-to-text", detail: "Deepgram transcribes the user's speech as a stream." },
+      { title: "LLM + tools + RAG", detail: "OpenAI reasons over the conversation, calls four function tools and grounds answers with OpenAI embeddings in PostgreSQL pgvector." },
+      { title: "Text-to-speech", detail: "Cartesia synthesises the response and streams it back into the room." },
+      { title: "Backend & deployment", detail: "FastAPI with SQLAlchemy and PostgreSQL, API rate limiting, internal API auth, persistent voice sessions, Docker deployment." },
+    ],
+    implementation: [
+      "Three-stage streaming STT–LLM–TTS pipeline integrating Deepgram, OpenAI and Cartesia",
+      "Four LLM function-calling tools: order status retrieval, customer order lookup, return initiation and policy retrieval",
+      "Retrieval-Augmented Generation with OpenAI embeddings and PostgreSQL pgvector",
+      "FastAPI backend with SQLAlchemy and PostgreSQL",
+      "10-minute LiveKit JWTs, API rate limiting and internal API authentication",
+      "Persistent voice sessions and Docker-based deployment",
+    ],
+    highlights: [
+      "Streaming STT → LLM → TTS pipeline: Deepgram, OpenAI and Cartesia",
+      "Silero VAD turn detection with 0.7s endpointing and real-time barge-in",
+      "Four function-calling tools plus pgvector RAG for grounded answers",
+      "Production concerns built in: short-lived JWTs, rate limiting, internal auth, Docker",
+    ],
+    stack: ["Python", "LiveKit", "OpenAI", "Deepgram", "Silero VAD", "Cartesia", "FastAPI", "PostgreSQL", "SQLAlchemy", "pgvector", "Docker"],
+    links: { github: "https://github.com/Yashmalik2004/Voice-Assistant" },
+  },
+  {
+    id: "cropie",
+    no: "03",
+    name: "Cropie",
+    tagline: "AI-Powered Crop Health Prediction & Monitoring",
+    category: "AI / Geospatial Intelligence / Precision Agriculture",
+    year: "2026",
+    accent: "#34d399",
+    summary:
+      "A satellite-driven precision agriculture platform. Google Earth Engine and TensorFlow power NDVI analysis, crop-health monitoring, yield forecasting and agricultural risk assessment through an eight-stage geospatial ML pipeline.",
+    overview:
+      "Cropie monitors agricultural regions from orbit. It acquires satellite imagery through Google Earth Engine, computes NDVI and runs TensorFlow inference to sort land into healthy, moderate and stressed zones. It then forecasts yield and generates recommendations. Monitoring re-runs every two days, compares against history to detect change and raises alerts when crop health shifts significantly.",
+    problem:
+      "Spotting crop stress early across a whole agricultural region is hard to do on the ground. Cropie uses satellite data to watch fields continuously, show where crop health is varying and turn that into yield forecasts, risk signals and recommendations.",
+    metrics: [
+      { value: "8", label: "Pipeline stages" },
+      { value: "99,540", label: "Valid pixels analysed" },
+      { value: "2-day", label: "Reprocessing cycle" },
+    ],
+    architecture: [
+      { title: "Satellite acquisition", detail: "Imagery for the agricultural region is retrieved through Google Earth Engine." },
+      { title: "Image preprocessing", detail: "Imagery is prepared for analysis at 315 × 316 spatial resolution, with 99,540 valid pixels." },
+      { title: "NDVI computation", detail: "The vegetation index is derived from the processed imagery." },
+      { title: "ML inference", detail: "TensorFlow models run over the NDVI and imagery features." },
+      { title: "Crop-health classification", detail: "The region is segmented into three zones: healthy, moderate and stressed." },
+      { title: "Yield prediction", detail: "Yield is forecast from the classified crop-health data." },
+      { title: "Visualisation", detail: "Interactive farm mapping with historical comparisons and change detection." },
+      { title: "Recommendations", detail: "Recommendations are generated, with alerts for significant crop-health variations." },
+    ],
+    implementation: [
+      "Satellite-driven agricultural monitoring platform built on Google Earth Engine and TensorFlow",
+      "Eight-stage geospatial ML pipeline, from satellite acquisition to recommendation generation",
+      "Automated crop monitoring with a two-day reprocessing cycle",
+      "Historical comparisons and change detection",
+      "Interactive farm mapping in a React front end with a Node.js and MongoDB back end",
+      "Alert generation for significant crop-health variations",
+    ],
+    highlights: [
+      "315 × 316 imagery with 99,540 valid pixels segmented into three health zones",
+      "Eight-stage pipeline: acquisition → NDVI → ML inference → yield → recommendations",
+      "Automated two-day reprocessing with historical change detection",
+      "Alerts generated when crop health varies significantly",
+    ],
+    stack: ["Python", "TensorFlow", "Google Earth Engine", "React", "Node.js", "MongoDB"],
+    links: { github: "https://github.com/Yashmalik2004/cropie" },
   },
 ];
 

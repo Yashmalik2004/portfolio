@@ -1,9 +1,8 @@
 "use client";
 import { useState, type FormEvent } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowUpRight, Award, Github, Mail, X } from "lucide-react";
+import { Award, Github, Mail } from "lucide-react";
 import Reveal from "./Reveal";
-import { achievements, education, experience, profile, projects, skills, stats } from "@/data/portfolio";
+import { achievements, education, experience, profile, skills, stats } from "@/data/portfolio";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -95,79 +94,6 @@ export function Experience() {
           </li>
         ))}
       </ol>
-    </Section>
-  );
-}
-
-function Tilt({ children, onClick, label }: { children: React.ReactNode; onClick: () => void; label: string }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const spring = { stiffness: 150, damping: 20 };
-  const rx = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), spring);
-  const ry = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]), spring);
-  return (
-    <motion.button
-      type="button" onClick={onClick} aria-label={label}
-      style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left) / r.width - 0.5);
-        y.set((e.clientY - r.top) / r.height - 0.5);
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-      className="group relative h-full w-full rounded-2xl border border-line bg-panel/70 p-7 text-left transition-colors hover:border-violet/70"
-    >
-      {children}
-    </motion.button>
-  );
-}
-
-export function Projects() {
-  const [sel, setSel] = useState<number | null>(null);
-  const p = sel === null ? null : projects[sel];
-  return (
-    <Section id="projects" title="Projects">
-      <div className="grid gap-6 lg:grid-cols-2">
-        {projects.map((pr, i) => (
-          <Reveal key={pr.name} delay={i * 0.1}>
-            <Tilt onClick={() => setSel(i)} label={`Open details for ${pr.name}`}>
-              <ArrowUpRight className="absolute right-6 top-6 text-zinc-600 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-violet" size={22} />
-              <h3 className="max-w-[85%] text-2xl font-semibold text-white">{pr.name}</h3>
-              <p className="mt-3 text-zinc-400">{pr.short}</p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {pr.stack.map((s) => <span key={s} className={`${chip} transition-transform group-hover:-translate-y-0.5`}>{s}</span>)}
-              </div>
-              <span className="mt-6 inline-block text-sm text-violet opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">View details</span>
-            </Tilt>
-          </Reveal>
-        ))}
-      </div>
-      <AnimatePresence>
-        {p && (
-          <motion.div
-            className="fixed inset-0 z-[60] grid place-items-center bg-black/70 p-4 backdrop-blur-sm"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setSel(null)}
-            onKeyDown={(e) => e.key === "Escape" && setSel(null)}
-          >
-            <motion.div
-              role="dialog" aria-modal="true" aria-label={p.name}
-              className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-line bg-panel p-7"
-              initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-2xl font-semibold text-white">{p.name}</h3>
-                <button autoFocus onClick={() => setSel(null)} aria-label="Close" className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line text-zinc-300"><X size={18} /></button>
-              </div>
-              <p className="mt-4 text-zinc-300"><span className="text-white">Problem: </span>{p.problem}</p>
-              <ul className="mt-5 list-disc space-y-2 pl-5 text-zinc-300 marker:text-violet">{p.features.map((f) => <li key={f}>{f}</li>)}</ul>
-              <div className="mt-6 flex flex-wrap gap-2">{p.stack.map((s) => <span key={s} className={chip}>{s}</span>)}</div>
-              <a href={profile.github} target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-full bg-violet px-5 text-sm font-medium text-white"><Github size={16} />View on GitHub</a>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </Section>
   );
 }

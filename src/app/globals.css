@@ -10,3 +10,66 @@ body { @apply bg-ink font-sans text-zinc-200 antialiased; overflow-x: hidden; }
 .link-u { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s; }
 .link-u:hover { background-size: 100% 1px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* ── Project showcase: HUD primitives ─────────────────────────────── */
+.hud-grid {
+  background-image:
+    linear-gradient(rgba(168, 85, 247, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, .07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 35%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse 75% 55% at 50% 35%, #000 25%, transparent 75%);
+}
+.hud-dots { background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 14px 14px; }
+
+/* Corner brackets drawn with gradients: no extra DOM, no images. */
+.hud-frame { position: relative; }
+.hud-frame::after {
+  content: ""; position: absolute; inset: -1px; pointer-events: none; z-index: 2;
+  --c: var(--acc, #a855f7); --l: 14px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--l) no-repeat;
+  opacity: .75; transition: opacity .3s, inset .3s;
+}
+.hud-frame:hover::after { opacity: 1; inset: -5px; }
+
+/* Cursor spotlight: --mx / --my are set from JS on pointer move. */
+.spot::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--acc, #a855f7) 13%, transparent), transparent 65%);
+}
+.spot:hover::before { opacity: 1; }
+
+.text-outline { color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--acc, #a855f7) 70%, transparent); }
+
+/* Animations: transform/opacity only. Paused when off-screen (.fx-paused) or reduced motion. */
+@keyframes fx-flow { to { background-position: 24px 0; } }
+.fx-flow { background-image: linear-gradient(90deg, var(--acc) 40%, transparent 0); background-size: 12px 1px; background-repeat: repeat-x; background-position: 0 0; animation: fx-flow 1s linear infinite; }
+@keyframes fx-flow-y { to { background-position: 0 24px; } }
+.fx-flow-y { background-image: linear-gradient(180deg, var(--acc) 40%, transparent 0); background-size: 1px 12px; background-repeat: repeat-y; animation: fx-flow-y 1s linear infinite; }
+@keyframes fx-eq { 0%, 100% { transform: scaleY(.18); } 50% { transform: scaleY(1); } }
+.fx-eq { transform-box: fill-box; transform-origin: center; animation: fx-eq 1.2s ease-in-out infinite; }
+@keyframes fx-stage { 0%, 28% { opacity: 1; } 36%, 100% { opacity: 0; } }
+.fx-stage { animation: fx-stage 4.5s ease-in-out infinite; opacity: 0; }
+@keyframes fx-blink { 50% { opacity: .25; } }
+.fx-blink { animation: fx-blink 1.6s steps(2, jump-none) infinite; }
+@keyframes fx-scan { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+.fx-scan { animation: fx-scan 5s linear infinite; }
+@keyframes fx-fill { 0%, 8% { opacity: .12; } 20%, 100% { opacity: 1; } }
+.fx-fill { animation: fx-fill 6s ease-out infinite; }
+@keyframes fx-step { 0%, 12.5% { opacity: 1; } 13%, 100% { opacity: 0; } }
+.fx-step { animation: fx-step 8s linear infinite; opacity: 0; }
+
+.fx-paused, .fx-paused * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  [class*="fx-"] { animation: none !important; }
+  .fx-stage, .fx-step { opacity: 0; }
+  .fx-stage.fx-first, .fx-step.fx-first { opacity: 1; }
+}
