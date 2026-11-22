@@ -41,8 +41,7 @@ export default function Hero() {
             <i className="h-3 w-3 rounded-full bg-red-500" /><i className="h-3 w-3 rounded-full bg-yellow-500" /><i className="h-3 w-3 rounded-full bg-green-500" />
             <span className="ml-2 text-zinc-500">engineer.ts</span>
           </div>
-          <pre className="overflow-x-auto whitespace-pre-wrap text-zinc-300">
-{ `const yash = {
+          <pre className="overflow-x-auto whitespace-pre-wrap text-zinc-300">{`const yash = {
   role: "AI Engineer",
   focus: "Agentic AI & Intelligent Systems",
   specialties: [
@@ -59,8 +58,7 @@ export default function Hero() {
   architecture: ["RAG", "Tool Calling", "Stateful Workflows"],
   achievement: "1st Place — NIT Hamirpur Hackathon 2025",
   graduating: "B.Tech CSE · 2027",
-};` }
-          </pre>
+};`}</pre>
         </motion.div>
       </div>
     </section>
