@@ -42,13 +42,24 @@ export default function Hero() {
             <span className="ml-2 text-zinc-500">engineer.ts</span>
           </div>
           <pre className="overflow-x-auto whitespace-pre-wrap text-zinc-300">
-{`const yash = {
-  focus: "Agentic AI",
-  agents: ["Planner", "Architect", "Coder"],
-  stack: [${skills[1].items.slice(0, 3).map((s) => `"${s}"`).join(", ")}],
-  award: "1st, NIT Hamirpur 2025",
-  graduating: 2027,
-};`}
+{ `const yash = {
+  role: "AI Engineer",
+  focus: "Agentic AI & Intelligent Systems",
+  specialties: [
+    "Multi-Agent Systems",
+    "Real-Time Voice AI",
+    "Geospatial Intelligence"
+  ],
+  stack: [
+    "Python",
+    "LangGraph",
+    "LangChain",
+    "LiveKit"
+  ],
+  architecture: ["RAG", "Tool Calling", "Stateful Workflows"],
+  achievement: "1st Place — NIT Hamirpur Hackathon 2025",
+  graduating: "B.Tech CSE · 2027",
+};` }
           </pre>
         </motion.div>
       </div>
