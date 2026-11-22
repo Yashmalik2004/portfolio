@@ -51,6 +51,10 @@ export function ChefVisual({ accent }: { accent: string }) {
 }
 
 /* ── 02 · Voice AI: streaming speech pipeline ─────────────────────── */
+// Round generated geometry so server (Node) and browser render identical strings;
+// Math.sin can differ in the last digits between engines and break hydration.
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 const BARS = Array.from({ length: 56 }, (_, i) => {
   const env = Math.sin((i / 55) * Math.PI); // louder in the middle, like a phrase
   const h = 0.25 + 0.75 * env * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.7)));
@@ -77,7 +81,7 @@ export function VoiceVisual({ accent }: { accent: string }) {
           {BARS.map((b, i) => (
             <rect
               key={i} className="fx-eq" x={i * 10 + 2} width="5" rx="2.5"
-              y={48 - 44 * b.h} height={88 * b.h} fill={`url(#${gid})`}
+              y={r2(48 - 44 * b.h)} height={r2(88 * b.h)} fill={`url(#${gid})`}
               style={{ animationDuration: `${b.d}s`, animationDelay: `${b.o}s` }}
             />
           ))}
@@ -123,7 +127,7 @@ const CELLS = Array.from({ length: COLS * ROWS }, (_, i) => {
   const x = i % COLS, y = Math.floor(i / COLS);
   const v = Math.sin(x * 0.42) * 0.6 + Math.cos(y * 0.55 + x * 0.12) * 0.5 + Math.sin((x + y) * 0.9) * 0.18;
   const zone: Zone = v > 0.2 ? "healthy" : v > -0.35 ? "moderate" : "stressed";
-  return { x, y, zone, o: 0.16 + 0.3 * Math.abs(Math.sin(x * 3.1 + y * 1.7)) };
+  return { x, y, zone, o: r2(0.16 + 0.3 * Math.abs(Math.sin(x * 3.1 + y * 1.7))) };
 });
 const STAGES = ["acquire", "preprocess", "ndvi", "inference", "classify", "yield", "visualise", "recommend"];
 
